@@ -202,3 +202,57 @@ class MemoryRankEngine:
 
         assert self._r is not None
         return {nid: float(score) for nid, score in zip(self._index_to_id, self._r)}
+
+    # ------------------------------------------------------------------
+    # 영속성 (Persistence) - 장기 기억의 핵심
+    # ------------------------------------------------------------------
+    def save_to_json(self, path: str, indent: int = 2) -> Dict[str, int]:
+        """그래프와 랭크 벡터를 JSON으로 저장 (장기 기억)
+        
+        Args:
+            path: 저장 경로
+            indent: JSON 들여쓰기
+            
+        Returns:
+            {"nodes": 노드 수, "edges": 엣지 수}
+        """
+        from .persistence import save_to_json as _save
+        return _save(self, path, indent)
+    
+    def load_from_json(self, path: str) -> Dict[str, int]:
+        """JSON에서 그래프와 랭크 벡터 로드
+        
+        Args:
+            path: 파일 경로
+            
+        Returns:
+            {"nodes": 노드 수, "edges": 엣지 수}
+        """
+        from .persistence import load_from_json as _load
+        return _load(self, path)
+    
+    def save_to_npz(self, path: str) -> Dict[str, int]:
+        """그래프와 랭크 벡터를 NumPy 압축 파일로 저장
+        
+        대용량 그래프에 적합 (JSON보다 빠름)
+        
+        Args:
+            path: 저장 경로 (.npz)
+            
+        Returns:
+            {"nodes": 노드 수}
+        """
+        from .persistence import save_to_npz as _save
+        return _save(self, path)
+    
+    def load_from_npz(self, path: str) -> Dict[str, int]:
+        """NumPy 압축 파일에서 그래프와 랭크 벡터 로드
+        
+        Args:
+            path: 파일 경로 (.npz)
+            
+        Returns:
+            {"nodes": 노드 수}
+        """
+        from .persistence import load_from_npz as _load
+        return _load(self, path)

@@ -325,3 +325,59 @@ class PanoramaMemoryEngine:
         self._timestamps.clear()
         self._event_map.clear()
         self._episode_index.clear()
+
+    # ------------------------------------------------------------------
+    # 영속성 (Persistence) - 장기 기억의 핵심
+    # ------------------------------------------------------------------
+    def save_to_json(self, path: str, indent: int = 2) -> int:
+        """이벤트를 JSON 파일로 저장 (장기 기억)
+        
+        Args:
+            path: 저장 경로
+            indent: JSON 들여쓰기 (None이면 압축)
+            
+        Returns:
+            저장된 이벤트 수
+        """
+        from .persistence import save_to_json as _save
+        return _save(self, path, indent)
+    
+    def load_from_json(self, path: str, clear_existing: bool = True) -> int:
+        """JSON 파일에서 이벤트 로드
+        
+        Args:
+            path: 파일 경로
+            clear_existing: True면 기존 이벤트 삭제 후 로드
+            
+        Returns:
+            로드된 이벤트 수
+        """
+        from .persistence import load_from_json as _load
+        return _load(self, path, clear_existing)
+    
+    def save_to_sqlite(self, path: str) -> int:
+        """이벤트를 SQLite DB로 저장 (장기 기억)
+        
+        대용량 이벤트에 적합.
+        
+        Args:
+            path: SQLite 파일 경로
+            
+        Returns:
+            저장된 이벤트 수
+        """
+        from .persistence import save_to_sqlite as _save
+        return _save(self, path)
+    
+    def load_from_sqlite(self, path: str, clear_existing: bool = True) -> int:
+        """SQLite DB에서 이벤트 로드
+        
+        Args:
+            path: SQLite 파일 경로
+            clear_existing: True면 기존 이벤트 삭제 후 로드
+            
+        Returns:
+            로드된 이벤트 수
+        """
+        from .persistence import load_from_sqlite as _load
+        return _load(self, path, clear_existing)
