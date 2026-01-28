@@ -4,6 +4,9 @@
 
 > 기억, 주의력, 감정의 동역학을 탐구하기 위한 **모듈형 인지 프레임워크**
 
+**현대 LLM 에이전트에는 구조화된 장기 기억과 실행 제어 기능이 부족합니다.**  
+**Cognitive Kernel은 이 갭을 메우기 위한 drop-in 인지 서브시스템을 제공합니다.**
+
 ---
 
 ## 🧠 이것은 무엇인가?
@@ -155,6 +158,9 @@ MIT License — 자유롭게 사용, 수정, 배포 가능
 > [🇰🇷 한국어](#cognitive-kernel) | **🇺🇸 English**
 
 > A **modular cognitive framework** for exploring dynamics of memory, attention, and emotion
+
+**Modern LLM agents lack structured long-term memory and executive control.**  
+**Cognitive Kernel provides drop-in cognitive subsystems to address this gap.**
 
 ---
 
