@@ -148,6 +148,26 @@ class MyCustomEngine:
 
 ---
 
+## 💡 핵심 사용법 (3줄로 시작)
+
+```python
+from cognitive_kernel import CognitiveKernel
+
+# 자동 저장/로드 세션
+with CognitiveKernel("my_brain") as kernel:
+    kernel.remember("meeting", {"topic": "project"}, importance=0.9)
+    memories = kernel.recall(k=5)
+    decision = kernel.decide(["rest", "work", "exercise"])
+```
+
+**이것만으로:**
+- ✅ 기억 저장 (장기 기억)
+- ✅ 중요도 계산 (PageRank)
+- ✅ 의사결정 (Softmax)
+- ✅ 자동 저장/복구
+
+---
+
 ## 🚀 Quick Start
 
 ```bash
@@ -352,6 +372,26 @@ class MyCustomEngine:
 | **[Amygdala](./Amygdala/)** | Emotion/Threat | Rescorla-Wagner | |
 | **[Hypothalamus](./Hypothalamus/)** | Energy/State | HPA Dynamics | |
 | **[Thalamus](./Thalamus/)** | Input filtering | Salience Gating | |
+
+---
+
+## 💡 핵심 사용법 (3줄로 시작)
+
+```python
+from cognitive_kernel import CognitiveKernel
+
+# 자동 저장/로드 세션
+with CognitiveKernel("my_brain") as kernel:
+    kernel.remember("meeting", {"topic": "project"}, importance=0.9)
+    memories = kernel.recall(k=5)
+    decision = kernel.decide(["rest", "work", "exercise"])
+```
+
+**이것만으로:**
+- ✅ 기억 저장 (장기 기억)
+- ✅ 중요도 계산 (PageRank)
+- ✅ 의사결정 (Softmax)
+- ✅ 자동 저장/복구
 
 ---
 
