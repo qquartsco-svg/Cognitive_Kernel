@@ -34,13 +34,23 @@ from .data_types import (
     DriveSignal,
     DriveType,
 )
+from .hpa_dynamics import (
+    HPADynamics,
+    HPAConfig,
+    HPAState,
+)
 
 __all__ = [
+    # 기존 엔진 (실용적 에너지/동기 관리)
     'HypothalamusEngine',
     'HypothalamusConfig',
     'InternalState',
     'DriveSignal',
     'DriveType',
+    # 이론적 HPA 동역학 모듈
+    'HPADynamics',
+    'HPAConfig',
+    'HPAState',
 ]
 
 __version__ = '1.0.0-alpha'
