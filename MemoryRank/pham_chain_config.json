@@ -1,0 +1,35 @@
+[
+  {
+    "index": 0,
+    "timestamp": 1769600563.89924,
+    "data": {
+      "name": "GENESIS"
+    },
+    "hash": "0"
+  },
+  {
+    "index": 1,
+    "timestamp": 1769600563.899242,
+    "data": {
+      "title": "config.py",
+      "author": "GNJz (Qquarts)",
+      "timestamp": "2026-01-28 22:42:43",
+      "hash": "da0da8e455e51f9f2eb6d26ac7dce35e22e1ceb2582751de4c7b6b6d35f89582",
+      "cid": "QmZeBgV8v4myrbU4oXhDUkLxCQi95CAx7gPFJjaBnjNTvC",
+      "description": "MemoryRank Config - PageRank parameters and feature weights",
+      "score": 0.9924,
+      "label": "A_HIGH",
+      "signals": {
+        "byte": 1.0,
+        "text": 1.0,
+        "ast": 0.9772727272727273,
+        "exec": 0.0
+      },
+      "exec_output": "",
+      "raw_bytes": "66726f6d2064617461636c617373657320696d706f72742064617461636c6173730a0a0a4064617461636c6173730a636c617373204d656d6f727952616e6b436f6e6669673a0a202020202222224d656d6f727952616e6b20ec9794eca78420ec84a4eca095eab0922e0a0a202020202d2064616d70696e673a20476f6f676c65205061676552616e6b20eab090ec87a020eab384ec889820ceb12028307e31290a202020202d206d61785f697465723a20ecb59ceb8c8020ebb098ebb3b520ed9a9fec88980a202020202d20746f6c3a20ec8898eba0b420ed8c90eb8ba820eab8b0eca48020284c31206e6f726d290a202020202d20726563656e63795f776569676874202f20656d6f74696f6e5f776569676874202f206672657175656e63795f7765696768743a0a202020202020706572736f6e616c697a6174696f6e20ebb2a1ed84b0eba5bc20eba78ceb93a420eb958c20eab0812066656174757265ec979020eab3b1ed95b4eca780eb8a9420eab080eca491ecb9980a202020202222220a0a2020202064616d70696e673a20666c6f6174203d20302e38350a202020206d61785f697465723a20696e74203d203130300a20202020746f6c3a20666c6f6174203d2031652d360a0a20202020726563656e63795f7765696768743a20666c6f6174203d20312e300a20202020656d6f74696f6e5f7765696768743a20666c6f6174203d20312e300a202020206672657175656e63795f7765696768743a20666c6f6174203d20312e300a",
+      "raw_text": "from dataclasses import dataclass\n\n\n@dataclass\nclass MemoryRankConfig:\n    \"\"\"MemoryRank 엔진 설정값.\n\n    - damping: Google PageRank 감쇠 계수 α (0~1)\n    - max_iter: 최대 반복 횟수\n    - tol: 수렴 판단 기준 (L1 norm)\n    - recency_weight / emotion_weight / frequency_weight:\n      personalization 벡터를 만들 때 각 feature에 곱해지는 가중치\n    \"\"\"\n\n    damping: float = 0.85\n    max_iter: int = 100\n    tol: float = 1e-6\n\n    recency_weight: float = 1.0\n    emotion_weight: float = 1.0\n    frequency_weight: float = 1.0\n"
+    },
+    "previous_hash": "0",
+    "hash": "1edc83d7c70ebe48a5bf2084c6e2a337bcd7104e5d1c1120fe6ba15b121c9923"
+  }
+]
