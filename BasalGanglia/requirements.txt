@@ -1,0 +1,6 @@
+# Basal Ganglia Engine Requirements
+# 기저핵 엔진 필수 패키지
+
+# 테스트
+pytest>=7.0.0
+
