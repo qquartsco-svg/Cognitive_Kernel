@@ -2,74 +2,135 @@
 
 > **🇰🇷 한국어** | [🇺🇸 English](#english-version)
 
-> **인지 운영체제** — 기억, 주의력, 감정, 추론을 통합 관리하는 모듈형 인지 엔진
+> **인지 연구 플랫폼** — 기억, 주의력, 감정의 동역학적 상호작용을 탐구하기 위한 모듈형 시뮬레이션 프레임워크
 
 ---
 
 ## 🧠 개요
 
-**Cognitive Kernel**은 인간의 인지 시스템을 소프트웨어로 모델링한 **모듈형 인지 엔진 모음**입니다.
+**Cognitive Kernel**은 인간 인지 시스템의 동역학적 특성을 탐구하기 위한 **모듈형 시뮬레이션 프레임워크**입니다.
 
-마치 운영체제의 커널이 CPU, 메모리, I/O를 관리하듯,
-Cognitive Kernel은 **기억, 주의력, 감정, 추론**을 관리합니다.
+이 프로젝트는 인지 현상의 **원인과 메커니즘**을 분석하는 데 초점을 맞추며,
+"정답을 제시하는 것"보다 **"관찰과 유추를 유도하는 도구"**를 제공하는 것을 목표로 합니다.
+
+### ⚠️ 연구 목적 명시
+
+```
+이 프레임워크는 인지과학 및 계산신경과학 연구를 위한 시뮬레이션 도구입니다.
+- 실제 뇌의 완전한 모델이 아닙니다
+- 임상 진단 도구가 아닙니다
+- 각 모듈의 수식은 "최소 유효 모델(Minimum Valid Model)"을 구현한 것입니다
+- 모든 결과는 추가 검증이 필요합니다
+```
 
 ---
 
-## 🎬 뇌 구조 비유
+## 🎬 구조적 비유
 
-\`\`\`
+각 모듈은 뇌 영역의 특정 기능을 추상화한 것으로, 그 역할은 다음과 같이 해석될 수 있습니다:
+
+```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        🧠 Cognitive Kernel                           │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│   📡 Thalamus (감각 필터)      →  입력 게이팅                         │
-│   😨 Amygdala (감정 처리)      →  위협 감지, 정서 반응                 │
-│   ⚡ Hypothalamus (항상성)     →  에너지/스트레스 조절                 │
+│   📡 Thalamus         →  감각 정보의 선별적 통과 (게이팅)             │
+│   😨 Amygdala         →  정서적 현저성 부여 (위협 감지)              │
+│   ⚡ Hypothalamus      →  항상성 상태 추적 (에너지, 스트레스)         │
 │                         ↓                                           │
-│   🎞️ Panorama (필름)           →  시간순 기록                        │
-│   💡 MemoryRank (조광기)       →  중요도 계산                         │
+│   🎞️ Panorama          →  시간축 사건 기록 (에피소드 기억)            │
+│   💡 MemoryRank        →  연결 기반 중요도 계산 (의미 기억)           │
 │                         ↓                                           │
-│   🎬 PFC (감독)               →  의식적 결정                         │
-│   👷 BasalGanglia (스태프)     →  습관 자동화                         │
+│   🎬 PFC               →  정보 통합 및 행동 선택                      │
+│   👷 BasalGanglia      →  반복 행동의 자동화 (습관)                   │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
-\`\`\`
+```
 
 ---
 
 ## 📦 모듈 구성
 
-| 모듈 | 역할 | 비유 | 상태 |
-|------|------|------|------|
-| **[Thalamus](./Thalamus/)** | 감각 입력 필터링, 주의 게이팅 | 접수 데스크 | ✅ v1.0.0 |
-| **[Amygdala](./Amygdala/)** | 감정 처리, 위협 감지 | 경비실 | ✅ v1.0.0 |
-| **[Hypothalamus](./Hypothalamus/)** | 항상성, 스트레스 반응 | 관리실 | ✅ v1.0.0 |
-| **[Panorama](./Panorama/)** | 시간축 에피소드 기억 | 필름 | ✅ v1.0.0 |
-| **[MemoryRank](./MemoryRank/)** | 기억 중요도 계산 | 조광기 | ✅ v1.0.0 |
-| **[PFC](./PFC/)** | 작업 기억, 행동 선택, 억제 | 감독 | ✅ v1.0.0 |
-| **[BasalGanglia](./BasalGanglia/)** | 행동 선택, 습관 학습 | 스태프 | ✅ v1.0.0 |
+| 모듈 | 추상화 대상 | 핵심 수식 | 상태 |
+|------|-------------|----------|------|
+| **[Thalamus](./Thalamus/)** | 감각 게이팅 | Salience Filtering | ✅ v1.0 |
+| **[Amygdala](./Amygdala/)** | 공포 학습 | Rescorla-Wagner | ✅ v1.0 |
+| **[Hypothalamus](./Hypothalamus/)** | 항상성 | HPA Axis Dynamics | ✅ v1.0 |
+| **[Panorama](./Panorama/)** | 에피소드 기억 | Exponential Decay | ✅ v1.0 |
+| **[MemoryRank](./MemoryRank/)** | 중요도 계산 | PageRank | ✅ v1.0 |
+| **[PFC](./PFC/)** | 의사결정 | Softmax Utility | ✅ v1.0 |
+| **[BasalGanglia](./BasalGanglia/)** | 습관 학습 | TD-Learning | ✅ v1.0 |
+
+### 📚 이론적 기반
+
+각 모듈의 수학적 모델과 신경과학적 근거는 [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)에서 확인할 수 있습니다.
 
 ---
 
-## 🔗 정보 흐름
+## 🔬 연구 활용 예시
 
-\`\`\`
-외부 입력 → Thalamus (필터링) → Amygdala (감정 태그)
-              ↓                        ↓
-         Panorama (기록)         Hypothalamus (에너지 조절)
-              ↓
-         MemoryRank (중요도) → PFC (결정) → BasalGanglia (실행)
-\`\`\`
+이 프레임워크를 통해 다음과 같은 질문을 탐구할 수 있습니다:
+
+### 메커니즘 탐구
+
+| 관찰 대상 | 탐구 가능한 질문 |
+|-----------|-----------------|
+| **PTSD 패턴** | 외상 기억의 침습은 어떤 조건에서 강화되는가? |
+| **우울 패턴** | 에너지 고갈과 부정 편향은 어떻게 상호작용하는가? |
+| **ADHD 패턴** | 주의 불안정성은 보상 예측 오차와 관련이 있는가? |
+
+### 시뮬레이션 예시
+
+```python
+# Normal vs PTSD 시나리오 비교
+python examples/full_brain_simulation.py
+```
+
+출력에서 관찰되는 차이점:
+- 스트레스 최대값 (0.44 vs 0.80)
+- 과각성 이벤트 수 (1 vs 3)
+- 인지 효율성 평균 (0.71 vs 0.61)
+
+**이 수치들은 "진단 기준"이 아니라, 시스템 동역학의 차이를 관찰하기 위한 지표입니다.**
 
 ---
 
 ## 🚀 Quick Start
 
-\`\`\`bash
+```bash
 git clone https://github.com/qquartsco-svg/Cognitive_Kernel.git
 cd Cognitive_Kernel
+
+# 기본 파이프라인 (4개 엔진)
 python examples/integrated_pipeline.py
-\`\`\`
+
+# 전체 뇌 시뮬레이션 (7개 엔진)
+python examples/full_brain_simulation.py
+```
+
+---
+
+## 📁 프로젝트 구조
+
+```
+Cognitive_Kernel/
+├── docs/
+│   ├── ARCHITECTURE.md        # 이론적 기반, 수식, 참고 문헌
+│   ├── ROADMAP.md             # 구현 계획
+│   └── VERIFICATION_STATUS.md # 이론↔코드 일치 검증
+├── examples/
+│   ├── integrated_pipeline.py # 4-엔진 통합
+│   └── full_brain_simulation.py # 7-엔진 시뮬레이션
+├── tests/
+│   └── test_mathematical_models.py # 수식 검증
+├── Thalamus/
+├── Amygdala/
+├── Hypothalamus/
+├── Panorama/
+├── MemoryRank/
+├── PFC/
+└── BasalGanglia/
+```
 
 ---
 
@@ -97,119 +158,135 @@ MIT License
 
 > [🇰🇷 한국어](#cognitive-kernel) | **🇺🇸 English**
 
-> **Cognitive Operating System** — A modular cognitive engine for memory, attention, emotion, and reasoning
+> **Cognitive Research Platform** — A modular simulation framework for exploring dynamic interactions of memory, attention, and emotion
 
 ---
 
 ## 🧠 Overview
 
-**Cognitive Kernel** is a collection of **modular cognitive engines** that model the human cognitive system in software.
+**Cognitive Kernel** is a **modular simulation framework** for exploring the dynamic properties of human cognitive systems.
 
-Just as an operating system kernel manages CPU, memory, and I/O,
-Cognitive Kernel manages **memory, attention, emotion, and reasoning**.
+This project focuses on **analyzing causes and mechanisms** of cognitive phenomena,
+aiming to provide **"a tool that induces observation and inference"** rather than "presenting definitive answers."
+
+### ⚠️ Research Purpose Statement
+
+```
+This framework is a simulation tool for cognitive science and computational neuroscience research.
+- It is NOT a complete model of the actual brain
+- It is NOT a clinical diagnostic tool
+- Each module implements a "Minimum Valid Model" of the target function
+- All results require further validation
+```
 
 ---
 
-## 🎬 Brain Architecture Metaphor
+## 🎬 Structural Metaphor
 
-\`\`\`
+Each module abstracts specific functions of brain regions. Their roles may be interpreted as follows:
+
+```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        🧠 Cognitive Kernel                           │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│   📡 Thalamus (Sensory Filter)  →  Input Gating                     │
-│   😨 Amygdala (Emotion)         →  Threat Detection                 │
-│   ⚡ Hypothalamus (Homeostasis) →  Energy/Stress Regulation         │
+│   📡 Thalamus         →  Selective passage of sensory info (gating) │
+│   😨 Amygdala         →  Emotional salience assignment              │
+│   ⚡ Hypothalamus      →  Homeostatic state tracking                 │
 │                         ↓                                           │
-│   🎞️ Panorama (Film)            →  Timeline Recording               │
-│   💡 MemoryRank (Dimmer)        →  Importance Calculation           │
+│   🎞️ Panorama          →  Timeline event recording                   │
+│   💡 MemoryRank        →  Connection-based importance calculation    │
 │                         ↓                                           │
-│   🎬 PFC (Director)             →  Conscious Decision               │
-│   👷 BasalGanglia (Staff)       →  Habit Automation                 │
+│   🎬 PFC               →  Information integration & action selection │
+│   👷 BasalGanglia      →  Automation of repeated behaviors (habit)   │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
-\`\`\`
+```
 
 ---
 
 ## 📦 Modules
 
-| Module | Role | Metaphor | Status |
-|--------|------|----------|--------|
-| **[Thalamus](./Thalamus/)** | Sensory filtering, attention gating | Reception Desk | ✅ v1.0.0 |
-| **[Amygdala](./Amygdala/)** | Emotion processing, threat detection | Security Guard | ✅ v1.0.0 |
-| **[Hypothalamus](./Hypothalamus/)** | Homeostasis, stress response | Facility Manager | ✅ v1.0.0 |
-| **[Panorama](./Panorama/)** | Timeline-based episodic memory | Film | ✅ v1.0.0 |
-| **[MemoryRank](./MemoryRank/)** | Memory importance ranking | Dimmer | ✅ v1.0.0 |
-| **[PFC](./PFC/)** | Working memory, action selection | Director | ✅ v1.0.0 |
-| **[BasalGanglia](./BasalGanglia/)** | Action selection, habit learning | Staff | ✅ v1.0.0 |
+| Module | Abstraction Target | Core Formula | Status |
+|--------|-------------------|--------------|--------|
+| **[Thalamus](./Thalamus/)** | Sensory gating | Salience Filtering | ✅ v1.0 |
+| **[Amygdala](./Amygdala/)** | Fear learning | Rescorla-Wagner | ✅ v1.0 |
+| **[Hypothalamus](./Hypothalamus/)** | Homeostasis | HPA Axis Dynamics | ✅ v1.0 |
+| **[Panorama](./Panorama/)** | Episodic memory | Exponential Decay | ✅ v1.0 |
+| **[MemoryRank](./MemoryRank/)** | Importance calculation | PageRank | ✅ v1.0 |
+| **[PFC](./PFC/)** | Decision making | Softmax Utility | ✅ v1.0 |
+| **[BasalGanglia](./BasalGanglia/)** | Habit learning | TD-Learning | ✅ v1.0 |
+
+### 📚 Theoretical Foundation
+
+Mathematical models and neuroscience references for each module can be found in [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md).
 
 ---
 
-## 🔗 Information Flow
+## 🔬 Research Application Examples
 
-\`\`\`
-External Input → Thalamus (Filter) → Amygdala (Emotion Tag)
-                    ↓                        ↓
-                Panorama (Record)      Hypothalamus (Energy)
-                    ↓
-                MemoryRank (Importance) → PFC (Decide) → BasalGanglia (Execute)
-\`\`\`
+This framework enables exploration of questions such as:
 
----
+### Mechanism Exploration
 
-## 🎯 Use Cases
+| Observation Target | Explorable Questions |
+|-------------------|---------------------|
+| **PTSD patterns** | Under what conditions is intrusive memory reinforced? |
+| **Depression patterns** | How do energy depletion and negative bias interact? |
+| **ADHD patterns** | Is attention instability related to reward prediction error? |
 
-### 🏢 Industry / Commercial
+### Simulation Example
 
-| Domain | Application |
-|--------|-------------|
-| **AI Agents** | Long-term memory + context-aware conversation |
-| **Recommendation** | User interest importance-based recommendations |
-| **Game AI** | NPC memory systems, player behavior learning |
-| **IoT/Monitoring** | Sensor data filtering, event prioritization |
+```python
+# Compare Normal vs PTSD scenarios
+python examples/full_brain_simulation.py
+```
 
-### 🔬 Research / Medical
+Observable differences in output:
+- Maximum stress (0.44 vs 0.80)
+- Hyperarousal events (1 vs 3)
+- Mean cognitive efficiency (0.71 vs 0.61)
 
-| Domain | Application |
-|--------|-------------|
-| **PTSD Research** | Intrusive memory, hyperarousal modeling |
-| **Depression Research** | Energy collapse, negative bias simulation |
-| **ADHD Research** | Attention instability, impulsivity modeling |
-| **Cognitive Science** | Memory network dynamics |
+**These values are NOT "diagnostic criteria" but indicators for observing system dynamics differences.**
 
 ---
 
-## 🔬 Theoretical Background
+## 🚀 Quick Start
 
-### OS Kernel vs Cognitive Kernel
+```bash
+git clone https://github.com/qquartsco-svg/Cognitive_Kernel.git
+cd Cognitive_Kernel
 
-| OS Kernel | Cognitive Kernel |
-|-----------|------------------|
-| Memory Manager | Panorama + MemoryRank |
-| I/O Controller | Thalamus |
-| Interrupt Handler | Amygdala |
-| Power Manager | Hypothalamus |
-| Process Scheduler | PFC |
-| System Call | BasalGanglia |
+# Basic pipeline (4 engines)
+python examples/integrated_pipeline.py
+
+# Full brain simulation (7 engines)
+python examples/full_brain_simulation.py
+```
 
 ---
 
 ## 📁 Project Structure
 
-\`\`\`
+```
 Cognitive_Kernel/
-├── README.md                   # This file
+├── docs/
+│   ├── ARCHITECTURE.md        # Theoretical foundation, formulas, references
+│   ├── ROADMAP.md             # Implementation plan
+│   └── VERIFICATION_STATUS.md # Theory↔Code verification
 ├── examples/
-│   └── integrated_pipeline.py  # Full demo
-├── Thalamus/                   # Sensory gating
-├── Amygdala/                   # Emotion processing
-├── Hypothalamus/               # Homeostasis
-├── Panorama/                   # Timeline memory
-├── MemoryRank/                 # Importance ranking
-├── PFC/                        # Decision making
-└── BasalGanglia/               # Habit learning
-\`\`\`
+│   ├── integrated_pipeline.py # 4-engine integration
+│   └── full_brain_simulation.py # 7-engine simulation
+├── tests/
+│   └── test_mathematical_models.py # Formula verification
+├── Thalamus/
+├── Amygdala/
+├── Hypothalamus/
+├── Panorama/
+├── MemoryRank/
+├── PFC/
+└── BasalGanglia/
+```
 
 ---
 
@@ -223,16 +300,6 @@ MIT License
 
 All core modules are signed with **PHAM (Proof of Honest Authorship & Merit)** blockchain.
 
-| Module | Signature |
-|--------|-----------|
-| Thalamus | ✅ Signed |
-| Amygdala | ✅ Signed |
-| Hypothalamus | ✅ Signed |
-| Panorama | ✅ Signed |
-| MemoryRank | ✅ Signed |
-| PFC | ✅ Signed |
-| BasalGanglia | ✅ Signed |
-
 ---
 
 ## 👤 Author
@@ -244,3 +311,15 @@ All core modules are signed with **PHAM (Proof of Honest Authorship & Merit)** b
 ## 🤝 Contributing
 
 Contributions are welcome! Please open an issue or submit a Pull Request.
+
+---
+
+## 📜 Citation
+
+If you use this framework in research, please consider citing:
+
+```
+Cognitive Kernel: A Modular Simulation Framework for Cognitive Dynamics
+GNJz (Qquarts), 2025
+https://github.com/qquartsco-svg/Cognitive_Kernel
+```

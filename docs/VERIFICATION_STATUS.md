@@ -12,7 +12,7 @@
 | **Panorama** | Exponential Decay | ✅ 일치 | 100% | `exp(-λt)` 구현됨 |
 | **MemoryRank** | PageRank | ✅ 일치 | 100% | Power iteration 구현됨 |
 | **PFC** | Softmax + Utility | ✅ 일치 | 100% | `exp(βU)/Σexp(βU)` 구현됨 |
-| **Amygdala** | Rescorla-Wagner | ⚠️ 부분 | 60% | 학습 규칙 미구현, 감쇠만 존재 |
+| **Amygdala** | Rescorla-Wagner | ✅ 일치 | 90% | RescorlaWagnerLearner 모듈 추가 |
 | **Hypothalamus** | HPA ODE | ⚠️ 부분 | 75% | 선형 모델, 포화 항 미구현 |
 | **BasalGanglia** | TD Learning | ✅ 일치 | 95% | Q-Learning + Dopamine 완전 구현 |
 | **Thalamus** | Salience Gating | ✅ 일치 | 90% | 키워드 기반 현저성 필터링 |

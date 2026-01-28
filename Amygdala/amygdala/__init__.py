@@ -32,13 +32,23 @@ Blockchain: PHAM v4 (Signed)
 from .amygdala_engine import AmygdalaEngine
 from .config import AmygdalaConfig
 from .data_types import EmotionState, ThreatSignal, FearMemory
+from .fear_learning import (
+    RescorlaWagnerLearner,
+    RescorlaWagnerConfig,
+    FearAssociation
+)
 
 __all__ = [
+    # 기존 엔진 (실용적 위협 감지)
     'AmygdalaEngine',
     'AmygdalaConfig',
     'EmotionState',
     'ThreatSignal',
     'FearMemory',
+    # 이론적 학습 모듈 (Rescorla-Wagner)
+    'RescorlaWagnerLearner',
+    'RescorlaWagnerConfig',
+    'FearAssociation',
 ]
 
 __version__ = "1.0.0-alpha"
