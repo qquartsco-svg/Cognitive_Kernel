@@ -18,15 +18,16 @@
 
 ## 📊 확정된 로드맵
 
-### Phase 1: 확산 (1~2주)
+### Phase 1: 확산 (1~2주) ✅ **진행 중**
 
 **목표**: "써본 사람이 생긴다"
 
 | Task | 상태 | 설명 |
 |------|------|------|
-| PyPI 배포 | 📋 대기 | `pip install cognitive-kernel` |
-| setup.py / pyproject.toml | 📋 대기 | 패키지 메타데이터 |
+| PyPI 배포 | ✅ 완료 | `pip install cognitive-kernel` |
+| setup.py / pyproject.toml | ✅ 완료 | 패키지 메타데이터 |
 | README 최소 정리 | ✅ 완료 | 이미 충분함 |
+| **홍보 (Twitter/Reddit/HN)** | 🔴 **다음** | 확산 시작 |
 
 **핵심 가치**:
 - `pip install cognitive-kernel` — 이 한 줄이 논문보다 영향력 큼
@@ -35,14 +36,14 @@
 
 ---
 
-### Phase 2: 적용 (2~3주)
+### Phase 2: 적용 (2~3주) ✅ **완료**
 
 **목표**: "차이가 보인다"
 
 | Task | 상태 | 설명 |
 |------|------|------|
-| LangChain Memory Adapter | 📋 대기 | 표준 인터페이스 구현 |
-| Agent 예제 1개 | 📋 대기 | 기억 있는 vs 없는 에이전트 |
+| LangChain Memory Adapter | ✅ 완료 | `examples/langchain_memory.py` |
+| Agent 예제 1개 | ✅ 완료 | Before/After 비교 데모 |
 | LlamaIndex 통합 (선택) | 📋 대기 | 확장 옵션 |
 
 **핵심 가치**:
