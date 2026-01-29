@@ -79,7 +79,7 @@ class CognitiveKernelMemory:
         if "input" in inputs:
             self.kernel.remember(
                 event_type="user_message",
-                payload={"text": inputs["input"], "role": "user"},
+                content={"text": inputs["input"], "role": "user"},
                 importance=0.7
             )
         
@@ -87,7 +87,7 @@ class CognitiveKernelMemory:
         if "output" in outputs:
             self.kernel.remember(
                 event_type="ai_response",
-                payload={"text": outputs["output"], "role": "assistant"},
+                content={"text": outputs["output"], "role": "assistant"},
                 importance=0.5
             )
     
