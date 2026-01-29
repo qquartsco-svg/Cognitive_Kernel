@@ -20,7 +20,7 @@
     # 자동 저장됨
 
 Author: GNJz (Qquarts)
-Version: 1.0.0
+Version: 2.0.0
 """
 
 from __future__ import annotations
