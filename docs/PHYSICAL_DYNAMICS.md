@@ -347,11 +347,35 @@ $$
 
 ---
 
+## 💻 구현 예제
+
+### 세차운동 데모
+
+```bash
+cd /Users/jazzin/Desktop/00_BRAIN/Cognitive_Kernel
+PYTHONPATH=src:$PYTHONPATH python examples/precession_demo.py
+```
+
+**결과:**
+- 엔트로피: 0.098 ~ 1.091 (세차운동)
+- 선택 변화: 4회 (주기적 변화)
+- ASD 성분(β=5.0)이 축을 고정
+- ADHD 성분(γ=0.3)이 축을 회전
+
+**시각화:**
+- `precession_results.png` 생성
+- 엔트로피 변화, 위상 변화, 선택 변화, 위상 공간 궤적
+
+→ [Full Example](../examples/precession_demo.py)
+
+---
+
 ## 🔗 관련 문서
 
 - [MINIMAL_DYNAMICS_MODEL.md](./MINIMAL_DYNAMICS_MODEL.md) - 최소 차분 모델
 - [COGNITIVE_LOOPS_ANALYSIS.md](./COGNITIVE_LOOPS_ANALYSIS.md) - 루프 분석
 - [COGNITIVE_STATES.md](./COGNITIVE_STATES.md) - 모드별 상세 설명
+- [COGNITIVE_BIAS_FIELD.md](./COGNITIVE_BIAS_FIELD.md) - 편향을 장으로 보기
 
 ---
 
