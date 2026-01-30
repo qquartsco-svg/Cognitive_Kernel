@@ -23,7 +23,7 @@ Author: GNJz (Qquarts)
 License: MIT
 """
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 __author__ = "GNJz (Qquarts)"
 
 from .core import (
