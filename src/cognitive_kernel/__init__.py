@@ -31,6 +31,11 @@ from .core import (
     CognitiveConfig,
     create_kernel,
 )
+from .cognitive_modes import (
+    CognitiveMode,
+    CognitiveModePresets,
+    ModeConfig,
+)
 
 # 엔진 접근 (고급 사용자용)
 from .engines import (
@@ -62,6 +67,10 @@ __all__ = [
     # 버전
     "__version__",
     "__author__",
+    # 인지 모드
+    "CognitiveMode",
+    "CognitiveModePresets",
+    "ModeConfig",
     # 엔진 (고급)
     "PanoramaMemoryEngine",
     "PanoramaConfig",

@@ -38,6 +38,12 @@ from .engines.panorama import PanoramaMemoryEngine, PanoramaConfig
 from .engines.memoryrank import MemoryRankEngine, MemoryRankConfig, MemoryNodeAttributes
 from .engines.pfc import PFCEngine, PFCConfig, Action
 from .engines.basal_ganglia import BasalGangliaEngine, BasalGangliaConfig
+from .engines.thalamus import ThalamusEngine, ThalamusConfig
+from .engines.amygdala import AmygdalaEngine, AmygdalaConfig
+from .engines.hypothalamus import HypothalamusEngine, HypothalamusConfig
+
+# 모드 임포트
+from .cognitive_modes import CognitiveMode, CognitiveModePresets, ModeConfig
 
 
 @dataclass
@@ -90,15 +96,23 @@ class CognitiveKernel:
         session_name: str = "default",
         config: Optional[CognitiveConfig] = None,
         auto_load: bool = True,
+        mode: Optional[CognitiveMode] = None,
     ):
         """
         Args:
             session_name: 세션 이름 (저장 파일 이름으로 사용)
             config: 설정 객체
             auto_load: True면 기존 세션 자동 로드
+            mode: 인지 모드 (NORMAL, ADHD, ASD, PTSD)
         """
         self.session_name = session_name
         self.config = config or CognitiveConfig()
+        
+        # 모드 설정
+        if mode is None:
+            mode = CognitiveMode.NORMAL
+        self.mode = mode
+        self.mode_config = CognitiveModePresets.get_config(mode)
         
         # 저장 경로 설정
         self.storage_path = Path(self.config.storage_dir) / session_name
@@ -117,7 +131,7 @@ class CognitiveKernel:
             self.load()
     
     def _init_engines(self):
-        """엔진 초기화"""
+        """엔진 초기화 (모드 설정 적용)"""
         # Panorama (시간축 기억)
         self.panorama = PanoramaMemoryEngine(PanoramaConfig(
             recency_half_life=self.config.recency_half_life,
@@ -125,20 +139,53 @@ class CognitiveKernel:
         
         # MemoryRank (중요도 랭킹)
         self.memoryrank = MemoryRankEngine(MemoryRankConfig(
-            damping=self.config.damping,
+            damping=self.mode_config.damping,
         ))
         
         # PFC (의사결정)
         self.pfc = PFCEngine(PFCConfig(
-            working_memory_capacity=self.config.working_memory_capacity,
+            working_memory_capacity=self.mode_config.working_memory_capacity,
+            decision_temperature=self.mode_config.decision_temperature,
         ))
         
         # BasalGanglia (습관 학습)
-        self.basal_ganglia = BasalGangliaEngine(BasalGangliaConfig())
+        self.basal_ganglia = BasalGangliaEngine(BasalGangliaConfig(
+            tau=self.mode_config.tau,
+            impulsivity=self.mode_config.impulsivity,
+            patience=self.mode_config.patience,
+        ))
+        
+        # Thalamus (입력 필터링) - 모드에 따라 게이팅 조절
+        self.thalamus = ThalamusEngine(ThalamusConfig(
+            gate_threshold=self.mode_config.gate_threshold,
+            max_channels=self.mode_config.max_channels,
+        ))
+        
+        # Amygdala (감정/위협)
+        self.amygdala = AmygdalaEngine(AmygdalaConfig())
+        
+        # Hypothalamus (에너지/스트레스)
+        self.hypothalamus = HypothalamusEngine(HypothalamusConfig())
         
         # 클래스 참조 저장
         self._MemoryNodeAttributes = MemoryNodeAttributes
         self._Action = Action
+    
+    def set_mode(self, mode: CognitiveMode) -> None:
+        """
+        인지 모드 변경
+        
+        Args:
+            mode: CognitiveMode (NORMAL, ADHD, ASD, PTSD)
+        
+        Example:
+            >>> kernel.set_mode(CognitiveMode.ASD)
+            >>> # 이제 패턴 유지 성향이 강화됨
+        """
+        self.mode = mode
+        self.mode_config = CognitiveModePresets.get_config(mode)
+        # 엔진 재초기화
+        self._init_engines()
     
     # ==================================================================
     # 핵심 인터페이스 - 간단하게 사용
