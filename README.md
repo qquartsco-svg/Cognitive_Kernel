@@ -20,6 +20,57 @@ pip install cognitive-kernel
 
 ---
 
+## ⚡ Why Hybrid Memory Matters (Real Example)
+
+**시나리오**: 과거에 낮은 중요도로 저장된 선호도가, 수많은 기억들 사이에 묻혔다가, **Hybrid Cognitive Kernel에 의해 다시 회상되어 실제 의사결정을 바꾸는 순간**
+
+### ❌ Vector DB Only Result:
+
+```
+Query: 'schedule a meeting'
+Found 5 results:
+
+1. [related_event] Distance: 0.712
+   Text: Had to reschedule morning meeting to afternoon...
+2. [related_event] Distance: 0.772
+   Text: Team agreed afternoon meetings work better...
+3. [preference] Distance: 0.903 ⚠️  (Original preference)
+   Text: I hate morning meetings. They make me unproductive.
+```
+
+**→ Preference가 3위, 관련 이벤트들이 위에 있음**
+
+### ✅ Hybrid (Vector DB + Cognitive Kernel) Result:
+
+```
+Query: 'schedule a meeting'
+Found 4 hybrid-ranked results:
+
+1. [preference] Hybrid Score: 0.251 ⚠️  (Original preference)
+   Importance: 0.478, Vector Distance: 0.903
+   Text: I hate morning meetings. They make me unproductive.
+2. [related_event] Hybrid Score: 0.102
+   Importance: 0.174, Vector Distance: 0.712
+   Text: Had to reschedule morning meeting to afternoon...
+```
+
+**→ Preference가 1위로 REVIVED!**  
+**→ Decision: Schedule afternoon meeting (CORRECT!)**
+
+### 📊 Comparison:
+
+| Metric | Vector Only | Hybrid Kernel |
+|--------|-------------|---------------|
+| Preference in Top 3 | ✅ (3위) | ✅ (1위) |
+| Importance Re-ranking | ❌ | ✅ (PageRank) |
+| Correct Decision | ⚠️ | ✅ |
+
+**💡 Key Insight**: Vector DB는 semantic similarity만 보지만, Cognitive Kernel은 **연결 관계를 통해 importance를 재계산**하여 묻힌 선호도를 되살립니다.
+
+→ [Full Example](./examples/hybrid_failure_vs_success.py)
+
+---
+
 ## 🔗 LangChain Integration (NEW!)
 
 ```python
@@ -384,6 +435,57 @@ MIT License — 자유롭게 사용, 수정, 배포 가능
 ```bash
 pip install cognitive-kernel
 ```
+
+---
+
+## ⚡ Why Hybrid Memory Matters (Real Example)
+
+**Scenario**: A preference stored with low importance gets buried among many memories, then **revived by Hybrid Cognitive Kernel to change actual decisions**
+
+### ❌ Vector DB Only Result:
+
+```
+Query: 'schedule a meeting'
+Found 5 results:
+
+1. [related_event] Distance: 0.712
+   Text: Had to reschedule morning meeting to afternoon...
+2. [related_event] Distance: 0.772
+   Text: Team agreed afternoon meetings work better...
+3. [preference] Distance: 0.903 ⚠️  (Original preference)
+   Text: I hate morning meetings. They make me unproductive.
+```
+
+**→ Preference ranked 3rd, related events above it**
+
+### ✅ Hybrid (Vector DB + Cognitive Kernel) Result:
+
+```
+Query: 'schedule a meeting'
+Found 4 hybrid-ranked results:
+
+1. [preference] Hybrid Score: 0.251 ⚠️  (Original preference)
+   Importance: 0.478, Vector Distance: 0.903
+   Text: I hate morning meetings. They make me unproductive.
+2. [related_event] Hybrid Score: 0.102
+   Importance: 0.174, Vector Distance: 0.712
+   Text: Had to reschedule morning meeting to afternoon...
+```
+
+**→ Preference REVIVED to 1st place!**  
+**→ Decision: Schedule afternoon meeting (CORRECT!)**
+
+### 📊 Comparison:
+
+| Metric | Vector Only | Hybrid Kernel |
+|--------|-------------|---------------|
+| Preference in Top 3 | ✅ (3rd) | ✅ (1st) |
+| Importance Re-ranking | ❌ | ✅ (PageRank) |
+| Correct Decision | ⚠️ | ✅ |
+
+**💡 Key Insight**: Vector DB only sees semantic similarity, but Cognitive Kernel **recalculates importance via connections** to revive buried preferences.
+
+→ [Full Example](./examples/hybrid_failure_vs_success.py)
 
 ---
 
