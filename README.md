@@ -154,6 +154,52 @@ pip install cognitive-kernel[vector]
 
 ---
 
+## 🔗 LlamaIndex Integration (NEW!)
+
+**LlamaIndex 에이전트에 Cognitive Kernel의 장기 기억 통합**
+
+```python
+from cognitive_kernel import CognitiveKernel
+from examples.llamaindex_memory import CognitiveKernelMemory
+from llama_index.core.agent import ReActAgent
+from llama_index.llms.openai import OpenAI
+
+# Cognitive Kernel Memory 초기화
+with CognitiveKernelMemory("my_assistant") as memory:
+    
+    # LlamaIndex 에이전트 생성
+    llm = OpenAI(model="gpt-4")
+    agent = ReActAgent.from_tools(
+        tools=[],
+        llm=llm,
+        memory=memory,  # ← Persistent, ranked memory!
+    )
+    
+    # 대화 (기억 유지)
+    response = agent.chat("Remember: I prefer morning meetings")
+    
+    # 다음 날 (새 프로세스)에도 기억 유지!
+    response = agent.chat("When should we schedule our call?")
+    # Agent recalls: "You prefer morning meetings"
+```
+
+**Features:**
+
+| Feature | Standard Memory | Cognitive Kernel |
+|---------|----------------|------------------|
+| Persistence | ❌ Lost on restart | ✅ Survives forever |
+| Importance Ranking | ❌ FIFO buffer | ✅ PageRank ranking |
+| Time Decay | ❌ None | ✅ Ebbinghaus curve |
+
+→ [Full LlamaIndex Example](./examples/llamaindex_memory.py)
+
+**설치:**
+```bash
+pip install cognitive-kernel llama-index
+```
+
+---
+
 ## 🎯 왜 지금 필요한가?
 
 **현대 LLM 에이전트에는 구조화된 장기 기억과 실행 제어 기능이 부족합니다.**
@@ -568,6 +614,52 @@ ranked = kernel.recall(k=5)  # PageRank-based
 pip install cognitive-kernel chromadb sentence-transformers
 # or
 pip install cognitive-kernel[vector]
+```
+
+---
+
+## 🔗 LlamaIndex Integration (NEW!)
+
+**Integrate Cognitive Kernel's long-term memory into LlamaIndex agents**
+
+```python
+from cognitive_kernel import CognitiveKernel
+from examples.llamaindex_memory import CognitiveKernelMemory
+from llama_index.core.agent import ReActAgent
+from llama_index.llms.openai import OpenAI
+
+# Initialize Cognitive Kernel Memory
+with CognitiveKernelMemory("my_assistant") as memory:
+    
+    # Create LlamaIndex agent
+    llm = OpenAI(model="gpt-4")
+    agent = ReActAgent.from_tools(
+        tools=[],
+        llm=llm,
+        memory=memory,  # ← Persistent, ranked memory!
+    )
+    
+    # Chat (memory persists)
+    response = agent.chat("Remember: I prefer morning meetings")
+    
+    # Next day (new process) - memory still persists!
+    response = agent.chat("When should we schedule our call?")
+    # Agent recalls: "You prefer morning meetings"
+```
+
+**Features:**
+
+| Feature | Standard Memory | Cognitive Kernel |
+|---------|----------------|------------------|
+| Persistence | ❌ Lost on restart | ✅ Survives forever |
+| Importance Ranking | ❌ FIFO buffer | ✅ PageRank ranking |
+| Time Decay | ❌ None | ✅ Ebbinghaus curve |
+
+→ [Full LlamaIndex Example](./examples/llamaindex_memory.py)
+
+**Installation:**
+```bash
+pip install cognitive-kernel llama-index
 ```
 
 ---
