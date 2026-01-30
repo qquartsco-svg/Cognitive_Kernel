@@ -283,6 +283,7 @@ class CognitiveKernel:
         options: List[str],
         context: Optional[str] = None,
         use_habit: bool = True,
+        external_torque: Optional[Dict[str, float]] = None,
     ) -> Dict[str, Any]:
         """
         의사결정 (PFC + BasalGanglia)
@@ -291,6 +292,8 @@ class CognitiveKernel:
             options: 행동 후보 리스트
             context: 상황 컨텍스트
             use_habit: True면 습관 학습 결과도 반영
+            external_torque: 외부 토크 값 (옵션별, 세차운동 등에 사용)
+                           예: {"choose_red": 0.3, "choose_blue": -0.1, ...}
             
         Returns:
             결정 결과
@@ -298,6 +301,11 @@ class CognitiveKernel:
         Example:
             >>> result = kernel.decide(["rest", "work", "exercise"])
             >>> print(f"Decision: {result['action']}")
+            
+            >>> # 세차운동을 위한 토크 주입
+            >>> torque = {"choose_red": 0.3, "choose_blue": -0.1, "choose_green": -0.2}
+            >>> result = kernel.decide(["choose_red", "choose_blue", "choose_green"], 
+            ...                       external_torque=torque)
         """
         # 기억 로드 → Working Memory
         memories = self.recall(k=self.config.working_memory_capacity)
@@ -319,6 +327,10 @@ class CognitiveKernel:
             # α: 기억 영향 계수 (0.5 = 기억이 최대 50%까지 보상에 영향)
             alpha = 0.5
             expected_reward = 0.5 + alpha * memory_relevance
+            
+            # 외부 토크 주입 (세차운동 등)
+            if external_torque and opt in external_torque:
+                expected_reward += external_torque[opt]
             
             actions.append(self._Action(
                 id=f"action_{i}",
