@@ -10,6 +10,7 @@ class MemoryRankConfig:
     - tol: 수렴 판단 기준 (L1 norm)
     - recency_weight / emotion_weight / frequency_weight:
       personalization 벡터를 만들 때 각 feature에 곱해지는 가중치
+    - local_weight_boost: 로컬 연결 가중치 부스트 (1.0 = 부스트 없음, >1.0 = 로컬 연결 강화)
     """
 
     damping: float = 0.85
@@ -19,3 +20,5 @@ class MemoryRankConfig:
     recency_weight: float = 1.0
     emotion_weight: float = 1.0
     frequency_weight: float = 1.0
+    
+    local_weight_boost: float = 1.0  # 로컬 연결 가중치 부스트

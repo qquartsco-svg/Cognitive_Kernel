@@ -92,7 +92,15 @@ class MemoryRankEngine:
                 continue
             i = self._id_to_index[dst]
             j = self._id_to_index[src]
-            W[i, j] += float(w)
+            
+            base_weight = float(w)
+            
+            # 로컬 연결 강화 (local_weight_boost)
+            if self.config.local_weight_boost > 1.0:
+                if self._is_local_connection(src, dst, node_attributes):
+                    base_weight *= self.config.local_weight_boost
+            
+            W[i, j] += base_weight
 
         # 열 정규화 → 전이 행렬 M
         col_sums = W.sum(axis=0)
@@ -110,6 +118,36 @@ class MemoryRankEngine:
 
         # 기존 rank는 무효화
         self._r = None
+    
+    def _is_local_connection(
+        self,
+        node1_id: str,
+        node2_id: str,
+        node_attributes: Optional[Dict[str, MemoryNodeAttributes]],
+    ) -> bool:
+        """
+        로컬 연결 여부 판단
+        
+        정의:
+        - 시간적 근접성: 같은 세션, 비슷한 시간대에 저장된 기억
+        - 같은 이벤트 타입: 같은 event_type을 가진 기억
+        - 직접 연결: 엣지로 직접 연결된 노드
+        
+        현재 구현:
+        - 직접 연결된 엣지는 모두 로컬로 간주
+        - 향후: Panorama 이벤트 정보를 활용해 더 정교하게 판단 가능
+        
+        Args:
+            node1_id: 노드 1 ID
+            node2_id: 노드 2 ID
+            node_attributes: 노드 속성 (선택적)
+            
+        Returns:
+            로컬 연결 여부
+        """
+        # 간단한 구현: 직접 연결된 엣지는 로컬로 간주
+        # 향후 개선: Panorama 이벤트 타입, 타임스탬프 비교
+        return True  # 현재는 모든 연결을 로컬로 간주
 
     def _build_personalization_vector(
         self,

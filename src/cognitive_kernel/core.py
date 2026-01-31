@@ -28,6 +28,7 @@ Version: 2.0.0
 from __future__ import annotations
 
 import json
+import math
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -125,6 +126,11 @@ class CognitiveKernel:
         self._event_count = 0
         self._is_dirty = False
         self._edges: List[Tuple[str, str, float]] = []
+        
+        # 동역학 상태 (엔트로피 기반 회전)
+        self._entropy_history: List[float] = []
+        self._precession_phi: float = 0.0  # 회전 위상
+        self._core_strength_history: List[float] = []
         
         # 자동 로드
         if auto_load and self._session_exists():
@@ -343,6 +349,114 @@ class CognitiveKernel:
         # PFC 결정
         pfc_result = self.pfc.process(actions)
         
+        # 전체 확률 분포 계산 (엔트로피 계산용)
+        utilities = [self.pfc.evaluate_action(a) for a in actions]
+        probabilities = self.pfc.softmax_probabilities(utilities)
+        probability_distribution = {
+            opt: prob for opt, prob in zip(options, probabilities)
+        }
+        
+        # 엔트로피 계산: E_n = -Σ P_n(k) ln P_n(k)
+        entropy = 0.0
+        for prob in probabilities:
+            if prob > 0:
+                entropy -= prob * math.log(prob)
+        
+        # 엔트로피 히스토리 저장
+        self._entropy_history.append(entropy)
+        # 최근 100개만 유지
+        if len(self._entropy_history) > 100:
+            self._entropy_history = self._entropy_history[-100:]
+        
+        # 코어 강도 계산 (중력 코어)
+        core_strength = 0.0
+        if memories:
+            total_importance = sum(m.get("importance", 0.0) for m in memories)
+            alpha = 0.5  # 기억 영향 계수
+            core_strength = min(1.0, alpha * total_importance / len(memories))
+        self._core_strength_history.append(core_strength)
+        if len(self._core_strength_history) > 100:
+            self._core_strength_history = self._core_strength_history[-100:]
+        
+        # 엔트로피 기반 자동 회전 토크 생성
+        # 엔트로피가 높을수록 회전 토크 증가 (ADHD: 궤도 커짐)
+        # 엔트로피가 낮을수록 회전 토크 감소 (ASD: 고착)
+        auto_torque = {}
+        if len(options) > 1:
+            # 이론적 최대 엔트로피 (균등 분포)
+            max_entropy = math.log(len(options))
+            # 정규화된 엔트로피 (0~1)
+            normalized_entropy = entropy / max_entropy if max_entropy > 0 else 0.0
+            
+            # 회전 토크 세기: 엔트로피에 비례
+            # 모드별 기본 회전 강도
+            base_gamma = 0.3  # 기본 회전 토크 세기
+            if self.mode == CognitiveMode.ADHD:
+                gamma = base_gamma * 1.5  # ADHD: 더 강한 회전
+            elif self.mode == CognitiveMode.ASD:
+                gamma = base_gamma * 0.5  # ASD: 약한 회전
+            else:
+                gamma = base_gamma
+            
+            # 엔트로피 기반 토크 조절
+            # 높은 엔트로피 → 강한 회전 (ADHD)
+            # 낮은 엔트로피 → 약한 회전 (ASD)
+            torque_strength = gamma * normalized_entropy
+            
+            # 세차 속도 (느린 시간척도)
+            omega = 0.05
+            
+            # 옵션별 위상 (균등 분포)
+            psi = {opt: i * 2 * math.pi / len(options) 
+                   for i, opt in enumerate(options)}
+            
+            # 회전 토크 계산: T_n(k) = torque_strength * cos(φ_n - ψ_k)
+            for opt in options:
+                auto_torque[opt] = torque_strength * math.cos(
+                    self._precession_phi - psi[opt]
+                )
+            
+            # 위상 업데이트 (느린 시간척도)
+            self._precession_phi += omega
+            # 2π 주기로 정규화
+            if self._precession_phi >= 2 * math.pi:
+                self._precession_phi -= 2 * math.pi
+        
+        # 자동 토크를 외부 토크에 병합
+        if external_torque is None:
+            external_torque = {}
+        for opt, torque in auto_torque.items():
+            external_torque[opt] = external_torque.get(opt, 0.0) + torque
+        
+        # 자동 토크가 있으면 utility 재계산
+        if auto_torque:
+            actions = []
+            for i, opt in enumerate(options):
+                opt_keywords = self._extract_keywords(opt)
+                memory_relevance = self._calculate_memory_relevance(opt_keywords, memories)
+                alpha = 0.5
+                expected_reward = 0.5 + alpha * memory_relevance
+                
+                # 자동 토크 주입
+                if opt in external_torque:
+                    expected_reward += external_torque[opt]
+                
+                actions.append(self._Action(
+                    id=f"action_{i}",
+                    name=opt,
+                    expected_reward=expected_reward,
+                    effort_cost=0.2,
+                    risk=0.1,
+                ))
+            
+            # PFC 재결정
+            pfc_result = self.pfc.process(actions)
+            utilities = [self.pfc.evaluate_action(a) for a in actions]
+            probabilities = self.pfc.softmax_probabilities(utilities)
+            probability_distribution = {
+                opt: prob for opt, prob in zip(options, probabilities)
+            }
+        
         # 습관 반영
         habit_action = None
         if use_habit and context:
@@ -352,6 +466,9 @@ class CognitiveKernel:
             "action": pfc_result.action.name if pfc_result.action else None,
             "utility": pfc_result.utility,
             "probability": pfc_result.selection_probability,
+            "probability_distribution": probability_distribution,  # 전체 분포
+            "entropy": entropy,  # 엔트로피
+            "core_strength": core_strength,  # 코어 강도
             "habit_suggestion": habit_action,
             "conflict": pfc_result.action.name != habit_action if (pfc_result.action and habit_action) else False,
         }

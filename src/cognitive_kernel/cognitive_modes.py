@@ -27,6 +27,14 @@ class CognitiveMode(Enum):
     ADHD = "adhd"  # 고엔트로피: 과도한 탐색
     ASD = "asd"    # 저엔트로피: 과도한 착취
     PTSD = "ptsd"  # 트라우마 고착
+    
+    # ADHD(+) ↔ ASD(-) 극 사이 질환들
+    PANIC = "panic"           # 공황장애: 과각성, 높은 불안
+    EPILEPSY = "epilepsy"     # 간질: 불안정, 발작
+    OCD = "ocd"               # 강박: 고착, 반복 행동
+    IED = "ied"               # 분노조절장애: 충동, 폭발적 분노
+    DEPRESSION = "depression" # 우울증: 무기력, 부정적 편향
+    BIPOLAR = "bipolar"       # 양극성 장애: 조증 ↔ 우울
 
 
 @dataclass
@@ -184,6 +192,181 @@ class CognitiveModePresets:
         )
     
     @staticmethod
+    def panic() -> ModeConfig:
+        """
+        공황장애 모드: 과각성, 높은 불안
+        
+        특징:
+        - 갑작스러운 공황 발작
+        - 과각성 (Hyperarousal)
+        - 높은 불안/스트레스
+        - ADHD 쪽에 가깝지만 불안 차원이 높음
+        """
+        return ModeConfig(
+            gate_threshold=0.15,  # 낮은 임계값 (과각성)
+            max_channels=8,  # 많은 채널 (불안으로 인한 산만)
+            decision_temperature=0.6,  # 중간 (불안정)
+            working_memory_capacity=4,  # 낮은 용량 (공황 시 집중력 저하)
+            tau=1.2,  # 높은 탐색
+            impulsivity=0.7,  # 높은 충동성
+            patience=0.2,  # 낮은 인내심
+            damping=0.85,
+            local_weight_boost=1.0,
+            novelty_sensitivity=3.5,  # 매우 높은 신규성 민감도 (공포)
+            stress_baseline=0.8,  # 매우 높은 스트레스
+        )
+    
+    @staticmethod
+    def epilepsy() -> ModeConfig:
+        """
+        간질 모드: 불안정, 발작
+        
+        특징:
+        - 뇌 전기 활동 이상
+        - 발작 (Seizure)
+        - 극도의 불안정성
+        - ADHD 쪽 (불안정, 탐색)
+        """
+        return ModeConfig(
+            gate_threshold=0.2,  # 낮은 임계값 (불안정)
+            max_channels=6,  # 중간
+            decision_temperature=0.4,  # 낮음 (매우 불안정)
+            working_memory_capacity=5,  # 낮음
+            tau=2.0,  # 매우 높은 탐색 (불안정)
+            impulsivity=0.9,  # 매우 높은 충동성
+            patience=0.1,  # 매우 낮은 인내심
+            damping=0.85,
+            local_weight_boost=0.8,  # 글로벌 연결 선호
+            novelty_sensitivity=2.0,  # 높은 민감도
+            stress_baseline=0.6,  # 높은 스트레스
+        )
+    
+    @staticmethod
+    def ocd() -> ModeConfig:
+        """
+        강박 모드: 고착, 반복 행동
+        
+        특징:
+        - 반복 행동 (Compulsion)
+        - 고착 (Obsession)
+        - 불안 완화를 위한 의식
+        - ASD 쪽에 가깝지만 불안 차원이 높음
+        """
+        return ModeConfig(
+            gate_threshold=0.1,  # 낮은 임계값 (과각성)
+            max_channels=2,  # 적은 채널 (집중)
+            decision_temperature=6.0,  # 매우 높음 (강한 고착)
+            working_memory_capacity=7,
+            tau=0.05,  # 매우 낮음 (극도의 착취)
+            impulsivity=0.2,  # 낮은 충동성
+            patience=0.95,  # 매우 높은 인내심 (루틴 유지)
+            damping=0.95,  # 매우 높은 감쇠 (기억 지속)
+            local_weight_boost=4.0,  # 매우 높은 로컬 연결 (패턴 고착)
+            novelty_sensitivity=4.0,  # 매우 높은 민감도 (변화 공포)
+            stress_baseline=0.7,  # 높은 스트레스
+        )
+    
+    @staticmethod
+    def ied() -> ModeConfig:
+        """
+        분노조절장애 모드: 충동, 폭발적 분노
+        
+        특징:
+        - 폭발적 분노
+        - 극도의 충동성
+        - 감정 조절 실패
+        - ADHD 쪽 (높은 충동성)
+        """
+        return ModeConfig(
+            gate_threshold=0.1,  # 낮은 임계값
+            max_channels=10,  # 많은 채널
+            decision_temperature=0.3,  # 매우 낮음 (충동적)
+            working_memory_capacity=4,  # 낮음
+            tau=2.5,  # 매우 높은 탐색
+            impulsivity=0.95,  # 극도의 충동성
+            patience=0.05,  # 극도로 낮은 인내심
+            damping=0.85,
+            local_weight_boost=0.8,  # 글로벌 연결 선호
+            novelty_sensitivity=2.5,  # 높은 민감도
+            stress_baseline=0.8,  # 매우 높은 스트레스
+        )
+    
+    @staticmethod
+    def depression() -> ModeConfig:
+        """
+        우울증 모드: 무기력, 부정적 편향
+        
+        특징:
+        - 에너지 저하
+        - 무기력
+        - 부정적 인지 편향
+        - ASD 쪽 (착취, 고착)
+        """
+        return ModeConfig(
+            gate_threshold=0.4,  # 높은 임계값 (무기력)
+            max_channels=2,  # 적은 채널
+            decision_temperature=2.0,  # 높음 (고착)
+            working_memory_capacity=5,
+            tau=0.3,  # 낮음 (착취)
+            impulsivity=0.2,  # 낮은 충동성
+            patience=0.8,  # 높은 인내심 (하지만 부정적)
+            damping=0.9,  # 높은 감쇠
+            local_weight_boost=2.5,  # 로컬 연결 강화
+            novelty_sensitivity=0.5,  # 낮은 민감도 (무기력)
+            stress_baseline=0.6,  # 높은 스트레스
+        )
+    
+    @staticmethod
+    def bipolar_mania() -> ModeConfig:
+        """
+        양극성 장애 - 조증 상태
+        
+        특징:
+        - 과도한 에너지
+        - 높은 탐색
+        - 충동성
+        - ADHD 쪽
+        """
+        return ModeConfig(
+            gate_threshold=0.05,  # 매우 낮음
+            max_channels=15,  # 매우 많은 채널
+            decision_temperature=0.3,  # 매우 낮음
+            working_memory_capacity=5,
+            tau=3.0,  # 극도의 탐색
+            impulsivity=0.9,  # 높은 충동성
+            patience=0.1,  # 낮은 인내심
+            damping=0.85,
+            local_weight_boost=0.5,  # 글로벌 연결 선호
+            novelty_sensitivity=3.0,  # 높은 민감도
+            stress_baseline=0.3,  # 낮은 스트레스 (조증)
+        )
+    
+    @staticmethod
+    def bipolar_depression() -> ModeConfig:
+        """
+        양극성 장애 - 우울 상태
+        
+        특징:
+        - 에너지 저하
+        - 낮은 탐색
+        - 고착
+        - ASD 쪽
+        """
+        return ModeConfig(
+            gate_threshold=0.5,  # 높음
+            max_channels=2,  # 적음
+            decision_temperature=3.0,  # 높음
+            working_memory_capacity=5,
+            tau=0.2,  # 낮음
+            impulsivity=0.2,  # 낮은 충동성
+            patience=0.7,  # 높은 인내심
+            damping=0.9,  # 높은 감쇠
+            local_weight_boost=3.0,  # 로컬 연결 강화
+            novelty_sensitivity=0.5,  # 낮은 민감도
+            stress_baseline=0.7,  # 높은 스트레스
+        )
+    
+    @staticmethod
     def get_config(mode: CognitiveMode) -> ModeConfig:
         """모드에 따른 설정 반환"""
         if mode == CognitiveMode.NORMAL:
@@ -194,6 +377,18 @@ class CognitiveModePresets:
             return CognitiveModePresets.asd()
         elif mode == CognitiveMode.PTSD:
             return CognitiveModePresets.ptsd()
+        elif mode == CognitiveMode.PANIC:
+            return CognitiveModePresets.panic()
+        elif mode == CognitiveMode.EPILEPSY:
+            return CognitiveModePresets.epilepsy()
+        elif mode == CognitiveMode.OCD:
+            return CognitiveModePresets.ocd()
+        elif mode == CognitiveMode.IED:
+            return CognitiveModePresets.ied()
+        elif mode == CognitiveMode.DEPRESSION:
+            return CognitiveModePresets.depression()
+        elif mode == CognitiveMode.BIPOLAR:
+            return CognitiveModePresets.bipolar_mania()  # 기본값은 조증
         else:
             raise ValueError(f"Unknown mode: {mode}")
 
