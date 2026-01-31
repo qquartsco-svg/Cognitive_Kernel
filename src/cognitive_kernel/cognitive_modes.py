@@ -481,6 +481,10 @@ class CognitiveModePresets:
             return CognitiveModePresets.depression()
         elif mode == CognitiveMode.BIPOLAR:
             return CognitiveModePresets.bipolar_mania()  # 기본값은 조증
+        elif mode == CognitiveMode.DEMENTIA:
+            return CognitiveModePresets.dementia()
+        elif mode == CognitiveMode.ALZHEIMER:
+            return CognitiveModePresets.alzheimer()
         else:
             raise ValueError(f"Unknown mode: {mode}")
 

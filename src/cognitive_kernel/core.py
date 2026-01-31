@@ -984,7 +984,7 @@ class CognitiveKernel:
     
     def status(self) -> Dict[str, Any]:
         """현재 상태 조회"""
-        return {
+        status_dict = {
             "session_name": self.session_name,
             "storage_path": str(self.storage_path),
             "event_count": len(self.panorama),
@@ -994,6 +994,18 @@ class CognitiveKernel:
             "mode": self.mode.value,
             "pipeline_enabled": self._pipeline is not None,
         }
+        
+        # Core Decay 상태 추가
+        if self._persistent_core is not None:
+            status_dict["core_decay"] = {
+                "persistent_core": self._persistent_core,
+                "core_decay_rate": self.mode_config.core_decay_rate,
+                "memory_update_failure": self.mode_config.memory_update_failure,
+                "loop_integrity_decay": self.mode_config.loop_integrity_decay,
+                "cognitive_distress": self._cognitive_distress,
+            }
+        
+        return status_dict
     
     def clear(self):
         """모든 기억 삭제 (주의!)"""
