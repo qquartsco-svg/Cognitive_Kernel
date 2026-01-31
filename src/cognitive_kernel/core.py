@@ -649,7 +649,7 @@ class CognitiveKernel:
                 ),
                 PFCDecisionStep(self.pfc),
                 EntropyCalculationStep(),
-                CoreStrengthStep(alpha=0.5),
+                CoreStrengthStep(self, alpha=0.5),  # self 전달하여 Core Decay 접근
                 TorqueGenerationStep(
                     self.mode,
                     base_gamma=0.3,
