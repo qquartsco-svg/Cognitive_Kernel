@@ -705,14 +705,9 @@ class CognitiveKernel:
                 alpha=0.5,
             ),
             PFCDecisionStep(self.pfc),
-            EntropyCalculationStep(),
-            CoreStrengthStep(self, alpha=0.5),  # self 전달하여 Core Decay 접근
-            TorqueGenerationStep(
-                self.mode,
-                base_gamma=0.3,
-                omega=0.05,
-                precession_phi=self._precession_phi,
-            ),
+            EntropyCalculationStep(self.dynamics),  # DynamicsEngine 사용
+            CoreStrengthStep(self.dynamics, self),  # DynamicsEngine 사용
+            TorqueGenerationStep(self.dynamics, self.mode),  # DynamicsEngine 사용
             UtilityRecalculationStep(
                 self.pfc,
                 self._calculate_memory_relevance,
