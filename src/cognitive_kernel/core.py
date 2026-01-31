@@ -167,6 +167,7 @@ class CognitiveKernel:
         
         # 파이프라인 (선택적, None이면 기본 파이프라인 사용)
         self._pipeline: Optional[DecisionPipeline] = pipeline
+        self._pipeline_available = PIPELINE_AVAILABLE
         
         # 자동 로드
         if auto_load and self._session_exists():
