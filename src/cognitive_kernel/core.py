@@ -849,12 +849,9 @@ class CognitiveKernel:
             )
         
         # 그래프 구축
+        # local_weight_boost는 MemoryRankConfig에서 처리됨
         if self._edges and node_attrs:
-            self.memoryrank.build_graph(
-                self._edges,
-                node_attrs,
-                self.mode_config.local_weight_boost,
-            )
+            self.memoryrank.build_graph(self._edges, node_attrs)
             self.memoryrank.calculate_importance()
     
     # ==================================================================
