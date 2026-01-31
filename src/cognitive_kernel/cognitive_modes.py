@@ -79,6 +79,11 @@ class ModeConfig:
     loop_integrity_decay: float = 0.0  # 루프 무결성 감쇠율 (MemoryRank 엣지 소실)
                                        # 0 = 정상, 1 = 모든 연결 단절
     
+    # 시간축 분리 (오래된 기억 vs 새 기억)
+    old_memory_decay_rate: float = 0.0  # 오래된 기억 감쇠율 (초당, 치매 특성: 최근 기억부터 지워짐)
+    new_memory_decay_rate: float = 0.0  # 새 기억 감쇠율 (초당, 알츠하이머 특성: 새 기억이 전혀 저장되지 않음)
+    memory_age_threshold: float = 3600.0  # 기억 나이 임계값 (초, 이보다 오래되면 "오래된 기억")
+    
     def to_dict(self) -> Dict[str, Any]:
         """딕셔너리로 변환"""
         return {
@@ -457,6 +462,11 @@ class CognitiveModePresets:
             memory_update_failure=0.8,  # 새 기억 80% 실패 (코어에 기여하지 못함)
             loop_integrity_decay=0.01,  # 루프 빠른 감쇠 (엣지 급격히 소실)
         )
+        # 시간축 분리: 새 기억 즉시 소실 (알츠하이머 특성)
+        config.old_memory_decay_rate = 0.0001  # 오래된 기억은 느리게 감쇠
+        config.new_memory_decay_rate = 0.1  # 새 기억은 매우 빠르게 감쇠 (거의 즉시 소실)
+        config.memory_age_threshold = 3600.0  # 1시간 이상 = 오래된 기억
+        return config
     
     @staticmethod
     def get_config(mode: CognitiveMode) -> ModeConfig:

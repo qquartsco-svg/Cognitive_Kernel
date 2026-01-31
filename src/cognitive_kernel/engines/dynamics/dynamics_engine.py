@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import math
 import time
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Dict, List, Optional, Tuple, Any, Union
 
 from .config import DynamicsConfig
 from .models import DynamicsState
@@ -71,9 +71,10 @@ class DynamicsEngine:
         수식:
         - 원시 코어: C_raw = α * (Σ importance) / N
         - Core Decay: C(t) = C(0) * exp(-λ * Δt)
+        - 시간축 분리: 오래된 기억과 새 기억에 다른 감쇠율 적용
         
         Args:
-            memories: 기억 리스트
+            memories: 기억 리스트 (각 기억은 timestamp 또는 age 정보 포함 가능)
             memory_update_failure: 새 기억 중요도 반영 실패율 (0~1)
             alpha: 기억 영향 계수 (None이면 config에서 가져옴)
             
@@ -83,19 +84,39 @@ class DynamicsEngine:
         if alpha is None:
             alpha = self.config.memory_alpha
         
-        # 1. 현재 원시 코어 강도 계산
+        # 1. 현재 원시 코어 강도 계산 (시간축 분리 적용)
         current_raw_core = 0.0
         if memories:
-            total_importance = sum(
-                m.get("importance", 0.0) for m in memories
-            )
+            current_time = time.time()
+            total_importance = 0.0
+            
+            for m in memories:
+                importance = m.get("importance", 0.0)
+                
+                # 시간축 분리: 오래된 기억 vs 새 기억
+                memory_timestamp = m.get("timestamp", current_time)
+                memory_age = current_time - memory_timestamp
+                
+                # 오래된 기억 감쇠 (치매 특성: 최근 기억부터 지워짐)
+                if self.config.old_memory_decay_rate > 0 and memory_age > self.config.memory_age_threshold:
+                    # 오래된 기억: 더 빠른 감쇠
+                    decay_factor = math.exp(-self.config.old_memory_decay_rate * memory_age)
+                    importance *= decay_factor
+                
+                # 새 기억 감쇠 (알츠하이머 특성: 새 기억이 전혀 저장되지 않음)
+                if self.config.new_memory_decay_rate > 0 and memory_age <= self.config.memory_age_threshold:
+                    # 새 기억: 매우 빠른 감쇠 (거의 즉시 소실)
+                    decay_factor = math.exp(-self.config.new_memory_decay_rate * memory_age)
+                    importance *= decay_factor
+                
+                total_importance += importance
             
             # 새 기억의 중요도 반영 차단 (알츠하이머)
             if memory_update_failure > 0:
                 total_importance *= (1.0 - memory_update_failure)
             
             current_raw_core = min(
-                1.0, alpha * total_importance / len(memories)
+                1.0, alpha * total_importance / len(memories) if memories else 0.0
             )
         
         # 2. Core Decay (물리적 시간 붕괴 항 적용)
@@ -127,7 +148,7 @@ class DynamicsEngine:
         self,
         options: List[str],
         entropy: float,
-        mode: Any,  # CognitiveMode
+        mode: Optional[Union[str, Any]] = None,  # CognitiveMode 또는 문자열
         base_gamma: Optional[float] = None,
         omega: Optional[float] = None,
     ) -> Dict[str, float]:
@@ -142,7 +163,7 @@ class DynamicsEngine:
         Args:
             options: 옵션 리스트
             entropy: 현재 엔트로피
-            mode: 인지 모드 (CognitiveMode)
+            mode: 인지 모드 (CognitiveMode 또는 문자열: "adhd", "asd", "normal" 등)
             base_gamma: 기본 회전 토크 세기 (None이면 config에서 가져옴)
             omega: 세차 속도 (None이면 config에서 가져옴)
             
@@ -157,14 +178,27 @@ class DynamicsEngine:
         if omega is None:
             omega = self.config.omega
         
-        # 모드별 gamma 조정
-        from ...cognitive_modes import CognitiveMode
-        if mode == CognitiveMode.ADHD:
-            gamma = base_gamma * 1.5  # ADHD: 더 강한 회전
-        elif mode == CognitiveMode.ASD:
-            gamma = base_gamma * 0.5  # ASD: 약한 회전
-        else:
-            gamma = base_gamma
+        # 모드별 gamma 조정 (독립 배포를 위해 유연하게 처리)
+        gamma = base_gamma
+        if mode is not None:
+            # 문자열 모드 처리
+            if isinstance(mode, str):
+                mode_str = mode.lower()
+                if mode_str == "adhd":
+                    gamma = base_gamma * 1.5  # ADHD: 더 강한 회전
+                elif mode_str == "asd":
+                    gamma = base_gamma * 0.5  # ASD: 약한 회전
+            # CognitiveMode 객체 처리 (선택적 의존성)
+            else:
+                try:
+                    from ...cognitive_modes import CognitiveMode
+                    if mode == CognitiveMode.ADHD:
+                        gamma = base_gamma * 1.5
+                    elif mode == CognitiveMode.ASD:
+                        gamma = base_gamma * 0.5
+                except ImportError:
+                    # CognitiveMode가 없으면 기본값 사용
+                    pass
         
         # 이론적 최대 엔트로피 (균등 분포)
         max_entropy = math.log(len(options))

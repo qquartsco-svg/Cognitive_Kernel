@@ -230,6 +230,10 @@ class CognitiveKernel:
             core_distress_threshold=0.3,
             history_size=100,
             memory_alpha=0.5,
+            # 시간축 분리 (치매/알츠하이머)
+            old_memory_decay_rate=getattr(self.mode_config, 'old_memory_decay_rate', 0.0),
+            new_memory_decay_rate=getattr(self.mode_config, 'new_memory_decay_rate', 0.0),
+            memory_age_threshold=getattr(self.mode_config, 'memory_age_threshold', 3600.0),
         )
         self.dynamics = DynamicsEngine(dynamics_config)
         
