@@ -649,7 +649,7 @@ class CognitiveKernel:
                     self.mode,
                     base_gamma=0.3,
                     omega=0.05,
-                    precession_phi=self._precession_phi,
+                    precession_phi_ref=self,  # self를 전달하여 위상 참조
                 ),
                 UtilityRecalculationStep(
                     self.pfc,
