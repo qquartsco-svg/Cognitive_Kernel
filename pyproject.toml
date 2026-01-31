@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cognitive-kernel"
-version = "2.0.1"
+version = "2.0.2"
 description = "Minimal, verifiable implementation of persistent long-term memory for AI agents"
 readme = "README.md"
 license = {text = "MIT"}
