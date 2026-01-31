@@ -55,8 +55,9 @@
 - [CURRENT_WORK_STATUS.md](./docs/work/CURRENT_WORK_STATUS.md) - 현재 작업 상태
 - [WORK_COMPLETED.md](./docs/work/WORK_COMPLETED.md) - 완료된 작업
 - [DISORDER_ANALYSIS.md](./docs/work/DISORDER_ANALYSIS.md) - 질환 분석
+- [STRATEGIC_ANALYSIS.md](./docs/STRATEGIC_ANALYSIS.md) - **전략 분석 (현재 상태, 활용 방안, 시장 파급효과)** ⭐
 
-**읽는 순서**: 현재 작업 상황 확인
+**읽는 순서**: 현재 작업 상황 확인, 전략적 분석
 
 ---
 
