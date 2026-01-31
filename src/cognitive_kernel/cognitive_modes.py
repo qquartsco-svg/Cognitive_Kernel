@@ -422,6 +422,11 @@ class CognitiveModePresets:
             memory_update_failure=0.3,  # 새 기억 30% 실패
             loop_integrity_decay=0.0005,  # 루프 느린 감쇠
         )
+        # 시간축 분리: 오래된 기억 감쇠 (치매 특성)
+        config.old_memory_decay_rate = 0.0001  # 오래된 기억 감쇠율 (느림)
+        config.new_memory_decay_rate = 0.0  # 새 기억은 정상
+        config.memory_age_threshold = 3600.0  # 1시간 이상 = 오래된 기억
+        return config
     
     @staticmethod
     def alzheimer() -> ModeConfig:
