@@ -855,8 +855,19 @@ class CognitiveKernel:
         
         # 그래프 구축
         # local_weight_boost는 MemoryRankConfig에서 처리됨
-        if self._edges and node_attrs:
-            self.memoryrank.build_graph(self._edges, node_attrs)
+        
+        # Loop Integrity Decay (알츠하이머: 엣지 소실)
+        edges_to_use = self._edges
+        if self.mode_config.loop_integrity_decay > 0:
+            import random
+            # 엣지 소실 확률 적용
+            edges_to_use = [
+                edge for edge in self._edges
+                if random.random() > self.mode_config.loop_integrity_decay
+            ]
+        
+        if edges_to_use and node_attrs:
+            self.memoryrank.build_graph(edges_to_use, node_attrs)
             self.memoryrank.calculate_importance()
     
     # ==================================================================
