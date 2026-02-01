@@ -253,12 +253,42 @@ class CognitiveKernel:
         self._MemoryNodeAttributes = MemoryNodeAttributes
         self._Action = Action
     
-    def set_mode(self, mode: CognitiveMode) -> None:
+    def set_mode(self, mode: CognitiveMode | str) -> None:
         """
         인지 모드 변경
         
+        Args:
+            mode: 인지 모드 (CognitiveMode enum 또는 문자열)
+                - 문자열인 경우: 대소문자 무시, 예: "adhd", "ASD", "dementia"
+                - 허용 모드: NORMAL, ADHD, ASD, PTSD, PANIC, EPILEPSY, OCD, IED,
+                           DEPRESSION, BIPOLAR, DEMENTIA, ALZHEIMER
+        
+        Raises:
+            ModeError: 유효하지 않은 모드인 경우
+        
+        Example:
+            >>> kernel.set_mode(CognitiveMode.ADHD)
+            >>> kernel.set_mode("adhd")  # 대소문자 무시
+            >>> kernel.set_mode("ASD")
+        
         모드를 변경하면 엔진들이 자동으로 재초기화됩니다.
         """
+        # 문자열 모드 지원 (대소문자 무시)
+        if isinstance(mode, str):
+            mode_str = mode.upper().strip()
+            try:
+                mode = CognitiveMode(mode_str)
+            except ValueError:
+                # 유효한 모드 목록 생성
+                valid_modes = [m.value.upper() for m in CognitiveMode]
+                raise ModeError(
+                    f"Invalid mode '{mode}'. Valid modes: {', '.join(valid_modes)}"
+                )
+        elif not isinstance(mode, CognitiveMode):
+            raise ModeError(
+                f"mode must be CognitiveMode enum or string, got {type(mode).__name__}"
+            )
+        
         self.mode = mode
         self.mode_config = CognitiveModePresets.get_config(mode)
         
