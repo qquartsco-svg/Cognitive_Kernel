@@ -53,6 +53,18 @@ from .engines.dynamics import DynamicsEngine, DynamicsConfig
 # 모드 임포트
 from .cognitive_modes import CognitiveMode, CognitiveModePresets, ModeConfig
 
+# 예외 및 검증
+from .exceptions import ValidationError, ModeError, DecisionError, MemoryError
+from .validators import (
+    validate_importance,
+    validate_emotion,
+    validate_k,
+    validate_options,
+    validate_event_type,
+    validate_content,
+    validate_related_to,
+)
+
 # 파이프라인 임포트 (선택적)
 try:
     from .pipeline import (
