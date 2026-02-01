@@ -1,0 +1,19 @@
+# Cognitive Kernel 통합 의존성
+# Integrated Dependencies for Cognitive Kernel
+
+# 핵심 의존성 (Core Dependencies)
+numpy>=1.20.0
+
+# 개발 의존성 (Development Dependencies)
+# 설치: pip install -e ".[dev]"
+# 또는: pip install -r requirements.txt
+
+# 선택적 의존성 (Optional Dependencies)
+# langchain: pip install -e ".[langchain]"
+# llamaindex: pip install -e ".[llamaindex]"
+# vector: pip install -e ".[vector]"
+# all: pip install -e ".[all]"
+
+# 참고: pyproject.toml의 dependencies와 일치합니다.
+# Note: Matches dependencies in pyproject.toml
+
