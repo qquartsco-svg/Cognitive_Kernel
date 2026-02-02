@@ -410,6 +410,9 @@ class CognitiveKernel:
             >>> for m in memories:
             ...     print(f"{m['event_type']}: {m['importance']:.2f}")
         """
+        # 입력 검증 (먼저 실행)
+        validate_k(k)
+        
         # MemoryRank 그래프 구축
         self._rebuild_graph()
         
