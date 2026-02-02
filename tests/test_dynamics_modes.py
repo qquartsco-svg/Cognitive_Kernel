@@ -94,12 +94,21 @@ class TestStringModes:
         options = ["rest", "work", "exercise"]
         entropy = 0.8
         
+        # precession_phi 고정 (결과 비교를 위해)
+        engine.state.precession_phi = 0.5
+        
         # 대소문자 다른 모드
         torque1 = engine.generate_torque(options, entropy, mode="ADHD")
+        
+        # precession_phi 다시 고정
+        engine.state.precession_phi = 0.5
         torque2 = engine.generate_torque(options, entropy, mode="adhd")
+        
+        # precession_phi 다시 고정
+        engine.state.precession_phi = 0.5
         torque3 = engine.generate_torque(options, entropy, mode="Adhd")
         
-        # 모두 동일한 결과여야 함
+        # 모두 동일한 결과여야 함 (precession_phi가 같으면)
         assert torque1 == torque2 == torque3, \
             "모드는 대소문자 무시해야 함"
     
@@ -110,8 +119,14 @@ class TestStringModes:
         options = ["rest", "work", "exercise"]
         entropy = 0.8
         
+        # precession_phi 고정 (결과 비교를 위해)
+        engine.state.precession_phi = 0.5
+        
         # 알 수 없는 모드
         torque_unknown = engine.generate_torque(options, entropy, mode="unknown_mode")
+        
+        # precession_phi 다시 고정
+        engine.state.precession_phi = 0.5
         
         # normal 모드와 비교
         torque_normal = engine.generate_torque(options, entropy, mode="normal")
