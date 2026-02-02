@@ -275,12 +275,12 @@ class CognitiveKernel:
         """
         # 문자열 모드 지원 (대소문자 무시)
         if isinstance(mode, str):
-            mode_str = mode.upper().strip()
+            mode_str = mode.strip().lower()  # enum value는 소문자
             try:
                 mode = CognitiveMode(mode_str)
             except ValueError:
                 # 유효한 모드 목록 생성
-                valid_modes = [m.value.upper() for m in CognitiveMode]
+                valid_modes = [m.value for m in CognitiveMode]
                 raise ModeError(
                     f"Invalid mode '{mode}'. Valid modes: {', '.join(valid_modes)}"
                 )
