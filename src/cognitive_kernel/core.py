@@ -464,6 +464,9 @@ class CognitiveKernel:
             >>> result = kernel.decide(["choose_red", "choose_blue", "choose_green"], 
             ...                       external_torque=torque)
         """
+        # 입력 검증 (먼저 실행)
+        validate_options(options)
+        
         # 파이프라인 패턴 사용
         if use_pipeline and PIPELINE_AVAILABLE:
             return self._decide_with_pipeline(options, context, use_habit, external_torque)
