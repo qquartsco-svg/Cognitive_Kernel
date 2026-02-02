@@ -38,6 +38,21 @@ class DynamicsEngine:
         self.config = config or DynamicsConfig()
         self.config.validate()
         self.state = DynamicsState()
+        # precession_phi 불변식 보장 (초기화 시)
+        self._normalize_precession_phi()
+    
+    def _normalize_precession_phi(self) -> None:
+        """
+        precession_phi를 [0, 2π) 범위로 정규화 (불변식 보장)
+        
+        이 메서드는 precession_phi가 항상 유효한 범위에 있음을 보장합니다.
+        """
+        if self.state.precession_phi >= 2 * math.pi:
+            self.state.precession_phi %= (2 * math.pi)
+        elif self.state.precession_phi < 0:
+            self.state.precession_phi = self.state.precession_phi % (2 * math.pi)
+            if self.state.precession_phi < 0:
+                self.state.precession_phi += 2 * math.pi
     
     def calculate_entropy(self, probabilities: List[float]) -> float:
         """
@@ -223,9 +238,11 @@ class DynamicsEngine:
         
         # 위상 업데이트 (느린 시간척도)
         self.state.precession_phi += omega
-        # 2π 주기로 정규화
-        if self.state.precession_phi >= 2 * math.pi:
-            self.state.precession_phi -= 2 * math.pi
+        # 2π 주기로 정규화 (불변식: 항상 [0, 2π) 범위 유지)
+        self.state.precession_phi %= (2 * math.pi)
+        # 음수 처리
+        if self.state.precession_phi < 0:
+            self.state.precession_phi += 2 * math.pi
         
         return auto_torque
     
@@ -283,6 +300,8 @@ class DynamicsEngine:
     def reset(self) -> None:
         """상태 초기화"""
         self.state.reset()
+        # precession_phi 불변식 보장 (리셋 후)
+        self._normalize_precession_phi()
     
     def get_state(self) -> DynamicsState:
         """상태 조회"""
