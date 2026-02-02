@@ -72,13 +72,28 @@ class TestDementiaAlzheimerTimeAxis:
             importance=0.9
         )
         
-        # 코어 강도 계산
-        memories = kernel.panorama.get_all_events()
+        # 코어 강도 계산 (Event 객체를 딕셔너리로 변환)
+        events = kernel.panorama.get_all_events()
+        memories = [
+            {
+                "importance": e.importance,
+                "timestamp": e.timestamp
+            }
+            for e in events
+        ]
         core_before = kernel.dynamics.calculate_core_strength(memories)
         
         # 시간 경과 (1일)
         mock_time.return_value = current_time + 86400
-        core_after = kernel.dynamics.calculate_core_strength(memories)
+        events_after = kernel.panorama.get_all_events()
+        memories_after = [
+            {
+                "importance": e.importance,
+                "timestamp": e.timestamp
+            }
+            for e in events_after
+        ]
+        core_after = kernel.dynamics.calculate_core_strength(memories_after)
         
         # 오래된 기억은 감쇠했지만, 새 기억은 유지되어야 함
         # 전체 코어는 감소하지만, 완전히 사라지지는 않음
