@@ -1,0 +1,17 @@
+{
+  "version": "2.0.2",
+  "timestamp": "2026-02-02T15:16:51.088930",
+  "hashes": {
+    "src/cognitive_kernel/__init__.py": "75d4ff56d18fd4cca399f1ab7ec2c66642be8fde9002752da5ff657ef2951fcc",
+    "src/cognitive_kernel/core.py": "328a101f5508fd4dc9856a987ee70a60c0cf2521e014c73d6f847d3bf08c87f3",
+    "src/cognitive_kernel/cognitive_modes.py": "af70b81057ce4cba6beff476f94c273a6f4b6efa0f45dd715a905d85303c37f1",
+    "src/cognitive_kernel/pipeline.py": "bd0339282e052a701268502f873ecb6814aadabf64ff3d9c850860b9ebd75d83",
+    "src/cognitive_kernel/exceptions.py": "09c6e0f3df2b3d53a07611bc4511c5dd7abeb9607388c5168b59b022444c0e9d",
+    "src/cognitive_kernel/validators.py": "ac5cae33e0add66d6bd6292bca483823024cd827aa9a76d7199026f04d363c6e",
+    "src/cognitive_kernel/engines/dynamics/dynamics_engine.py": "f9a3591353b0768db4ba3d9830dd02835d796a7ec95e6245f13ea23c9fdf7da8",
+    "src/cognitive_kernel/engines/dynamics/config.py": "b06dd0f38044cd5d9d4ad7cfa19d0fe5b5d8df993480fc48494ddcaff0bcde01",
+    "src/cognitive_kernel/engines/dynamics/models.py": "30cbd8d64dcd4d2d1731428223402ac1db407cc00a0d7307e1aa22c8baf4675b",
+    "pyproject.toml": "287208ea3337ae1c9e7040341d5a6d16240d4ba17c67dd447280da3d02f5563e",
+    "README.md": "faca20f3ed51b3d18f5cfac51a1bed8a9a90f1a70e9e78388b8cf6e78275b662"
+  }
+}
