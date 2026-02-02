@@ -185,6 +185,10 @@ class TestDecideContract:
         """출력 스키마 검증"""
         kernel = CognitiveKernel()
         
+        # 기억 추가 (결과가 더 안정적이 되도록)
+        kernel.remember("test1", importance=0.9)
+        kernel.remember("test2", importance=0.8)
+        
         result = kernel.decide(["rest", "work", "exercise"])
         
         # 필수 키 확인
@@ -204,7 +208,9 @@ class TestDecideContract:
         assert isinstance(result["core_strength"], float)
         
         # 확률 분포 정규화 확인
-        prob_sum = sum(result["probability_distribution"].values())
+        prob_dist = result["probability_distribution"]
+        assert len(prob_dist) > 0, "probability_distribution should not be empty"
+        prob_sum = sum(prob_dist.values())
         assert abs(prob_sum - 1.0) < 1e-6, f"Probability sum should be 1.0, got {prob_sum}"
         
         # 범위 확인

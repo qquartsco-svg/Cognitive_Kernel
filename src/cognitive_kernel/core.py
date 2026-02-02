@@ -362,6 +362,13 @@ class CognitiveKernel:
             >>> kernel.remember("meeting", {"topic": "project"}, importance=0.9)
             >>> kernel.remember("idea", {"content": "new feature"}, related_to=[...])
         """
+        # 입력 검증
+        validate_event_type(event_type)
+        validate_content(content)
+        validate_importance(importance)
+        validate_emotion(emotion)
+        validate_related_to(related_to)
+        
         timestamp = time.time()
         
         # Panorama에 이벤트 저장
