@@ -157,6 +157,9 @@ class TestDecideContract:
         """정상 입력 테스트"""
         kernel = CognitiveKernel()
         
+        # 기억 추가 (그래프 빌드를 위해)
+        kernel.remember("test1", importance=0.9)
+        
         # 기본 사용
         result = kernel.decide(["rest", "work", "exercise"])
         assert isinstance(result, dict)
