@@ -14,11 +14,17 @@ Version: 2.0.1+
 from .config import DynamicsConfig
 from .models import DynamicsState
 from .dynamics_engine import DynamicsEngine
+from .neural_dynamics import ContinuousDynamicsConfig, NeuralDynamicsCore
+from .plasticity import HebbianPlasticityConfig, hebbian_update
 
 __all__ = [
     "DynamicsConfig",
     "DynamicsState",
     "DynamicsEngine",
+    "ContinuousDynamicsConfig",
+    "NeuralDynamicsCore",
+    "HebbianPlasticityConfig",
+    "hebbian_update",
 ]
 
 __version__ = "1.0.0"

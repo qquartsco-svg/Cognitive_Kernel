@@ -23,7 +23,7 @@ Author: GNJz (Qquarts)
 License: MIT
 """
 
-__version__ = "2.0.2"
+__version__ = "2.0.3"
 __author__ = "GNJz (Qquarts)"
 
 from .core import (
@@ -52,6 +52,16 @@ from .engines import (
     DynamicsEngine,
     DynamicsConfig,
     DynamicsState,
+    ContinuousDynamicsConfig,
+    NeuralDynamicsCore,
+    HebbianPlasticityConfig,
+    hebbian_update,
+    IrrationalAlgebraEngine,
+    IrrationalAlgebraConfig,
+    IrrationalAlgebraSnapshot,
+    IrrationalConstant,
+    IrrationalObservation,
+    AlgebraicInvariant,
 )
 
 # Vector DB 통합 (선택적)
@@ -88,8 +98,17 @@ __all__ = [
     "DynamicsEngine",
     "DynamicsConfig",
     "DynamicsState",
+    "ContinuousDynamicsConfig",
+    "NeuralDynamicsCore",
+    "HebbianPlasticityConfig",
+    "hebbian_update",
+    "IrrationalAlgebraEngine",
+    "IrrationalAlgebraConfig",
+    "IrrationalAlgebraSnapshot",
+    "IrrationalConstant",
+    "IrrationalObservation",
+    "AlgebraicInvariant",
     # Vector DB
     "VectorDBBackend",
     "VECTOR_DB_AVAILABLE",
 ]
-

@@ -18,7 +18,23 @@ from .panorama import PanoramaMemoryEngine, PanoramaConfig
 from .memoryrank import MemoryRankEngine, MemoryRankConfig, MemoryNodeAttributes
 from .pfc import PFCEngine, PFCConfig, Action
 from .basal_ganglia import BasalGangliaEngine, BasalGangliaConfig
-from .dynamics import DynamicsEngine, DynamicsConfig, DynamicsState
+from .dynamics import (
+    DynamicsEngine,
+    DynamicsConfig,
+    DynamicsState,
+    ContinuousDynamicsConfig,
+    NeuralDynamicsCore,
+    HebbianPlasticityConfig,
+    hebbian_update,
+)
+from .irrational_algebra import (
+    IrrationalAlgebraEngine,
+    IrrationalAlgebraConfig,
+    IrrationalAlgebraSnapshot,
+    IrrationalConstant,
+    IrrationalObservation,
+    AlgebraicInvariant,
+)
 
 __all__ = [
     # Panorama
@@ -39,5 +55,15 @@ __all__ = [
     'DynamicsEngine',
     'DynamicsConfig',
     'DynamicsState',
+    'ContinuousDynamicsConfig',
+    'NeuralDynamicsCore',
+    'HebbianPlasticityConfig',
+    'hebbian_update',
+    # Irrational Algebra
+    'IrrationalAlgebraEngine',
+    'IrrationalAlgebraConfig',
+    'IrrationalAlgebraSnapshot',
+    'IrrationalConstant',
+    'IrrationalObservation',
+    'AlgebraicInvariant',
 ]
-
