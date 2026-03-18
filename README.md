@@ -29,6 +29,27 @@
 - ✅ **동적 피드백**: 엔트로피 기반 자동 탐색
 - ✅ **안정적 의사결정**: 메모리 중력(코어 강도) 기반 수렴
 
+### 수학 구조 해석 엔진
+
+`Cognitive_Kernel`은 이제 단순 기억 커널을 넘어,
+브레인 수학 엔진 축의 최종 해석기를 포함합니다.
+
+| 엔진 | 역할 |
+|------|------|
+| `irrational_algebra` | 상태 벡터의 무리수 공명, 대수적 불변식, 경계/관측/동역학 건강도를 결합한 구조 해석 |
+
+이 엔진은 `ENGINE_HUB` 쪽 수학 엔진들과 다음 관계를 가집니다.
+
+```text
+AlgebraApprox_Engine         → 근사 방법론
+IrrationalApprox_Engine     → 무리수 수렴 생성
+ConvergenceDynamics_Engine  → 수렴 과정 판정
+irrational_algebra          → 구조 해석
+```
+
+즉 `Cognitive_Kernel`은 수렴을 만드는 곳이 아니라,
+현재 상태의 구조적 질서를 읽는 **수학 해석 코어**입니다.
+
 ---
 
 ## 🚀 빠른 시작
